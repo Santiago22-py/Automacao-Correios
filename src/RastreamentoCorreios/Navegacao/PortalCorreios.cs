@@ -76,6 +76,18 @@ namespace RastreamentoCorreios.Navegacao
         }
 
         /// <summary>
+        /// Pede um novo CAPTCHA pelo botão da página e aguarda a nova imagem carregar.
+        /// </summary>
+        public async Task RecarregarCaptchaAsync()
+        {
+            await Pagina.RunAndWaitForResponseAsync(
+                () => Pagina.Locator("#captcha_refresh_btn").ClickAsync(),
+                resposta => resposta.Url.Contains("securimage_show.php"));
+
+            await AguardarCaptchaCarregadoAsync();
+        }
+
+        /// <summary>
         /// Fecha o navegador e libera os recursos utilizados pelo Playwright.
         /// </summary>
         private IPage Pagina =>
