@@ -38,7 +38,7 @@ namespace RastreamentoCorreios.Navegacao
         {
             _playwright = await Playwright.CreateAsync();
             _browser = await _playwright.Chromium.LaunchAsync(new() { Headless = _headless });
-            _page = await _browser.NewPageAsync();
+            _page = await _browser.NewPageAsync(new() { DeviceScaleFactor = 1 });
             _page.SetDefaultTimeout(_timeoutMs);
 
             await _page.GotoAsync(UrlCorreios, new() { WaitUntil = WaitUntilState.DOMContentLoaded });
