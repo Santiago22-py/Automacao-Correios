@@ -9,6 +9,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Playwright" Version="1.63.0" />
+    <PackageReference Include="Tesseract" Version="5.2.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="tessdata\**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 
 </Project>
