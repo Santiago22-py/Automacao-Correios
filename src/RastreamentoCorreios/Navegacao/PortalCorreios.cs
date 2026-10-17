@@ -111,12 +111,6 @@ namespace RastreamentoCorreios.Navegacao
                 _playwright.Dispose();
                 _playwright = null;
             }
-
-            if (_page != null)
-            {
-                await _page.CloseAsync();
-                _page = null;
-            }
         }
     }    
 }
