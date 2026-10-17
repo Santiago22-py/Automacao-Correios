@@ -1,3 +1,6 @@
-
 docs/
 
+bin/
+obj/
+.vs/
+captchas/
