@@ -47,7 +47,7 @@ namespace RastreamentoCorreios.Captcha
 
             var texto = new string(pagina.GetText().Where(c => !char.IsWhiteSpace(c)).ToArray()).ToLowerInvariant();
 
-            return new CaptchaLido(texto, isValido(texto));
+            return CaptchaLido.Criar(texto, _caracteresPermtidos, _tamanhoMinimo, _tamanhMaximo);
         }
 
         /// <summary>
@@ -57,40 +57,10 @@ namespace RastreamentoCorreios.Captcha
         /// <param name="pastaDebug">O caminho da pasta para salvar as imagens de depuração.</param>
         private static Pix PreProcessar(byte[] imagemPng, string? pastaDebug)
         {
-            var cinza = FiltrosImagem.CarregarEmCinza(imagemPng);
-
-            var tinta = FiltrosImagem.Binarizar(cinza, FiltrosImagem.LimiarOtsu(cinza));
-            Salvar(tinta, pastaDebug, "1-binarizada");
-
-            tinta = FiltrosImagem.RemoverComponentesPequenos(tinta, tamanhoMinimo: 150);
-            Salvar(tinta, pastaDebug, "2-sem-pontos");
-
-            tinta = FiltrosImagem.Abrir(tinta, raio: 2);
-            Salvar(tinta, pastaDebug, "3-sem-linhas-finas");
-
-            tinta = FiltrosImagem.RemoverComponentesPequenos(tinta, tamanhoMinimo: 150);
-            Salvar(tinta, pastaDebug, "4-sem-fragmentos");
-
+            var tinta = FiltrosImagem.Limpar(imagemPng, pastaDebug);
             tinta = FiltrosImagem.RecortarComMargem(tinta, margem: 15);
-            Salvar(tinta, pastaDebug, "5-recortada");
-
+            FiltrosImagem.SalvarDebug(tinta, pastaDebug, "5-recortada");
             return FiltrosImagem.ParaPix(tinta);
-        }
-
-        // Retorna se o texto do CAPTCHA é válido com base nos critérios de tamanho mínimo e máximo e nos caracteres permitidos
-        private bool isValido(string texto)
-        {
-            return texto.Length >= _tamanhoMinimo && texto.Length <= _tamanhMaximo && texto.All(_caracteresPermtidos.Contains);
-        }
-        
-        // Salva a imagem em um arquivo PNG na pasta de depuração, se fornecida
-        private static void Salvar(bool[,] tinta, string? pastaDebug, string etapa)
-        {
-            if (pastaDebug is null) return;
-
-            Directory.CreateDirectory(pastaDebug);
-            using var pix = FiltrosImagem.ParaPix(tinta);
-            pix.Save(Path.Combine(pastaDebug, $"{etapa}.png"), ImageFormat.Png);
         }
 
         public void Dispose()
