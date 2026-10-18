@@ -74,9 +74,11 @@ public sealed class Rastreador(ICaptchaSolver solver, OpcoesRastreamento opcoes,
             }
 
             if (erro != MensagemCaptchaInvalido)
+            {
+                Registrar(tentativa, $"OCR leu '{lido.Texto}', portal respondeu '{erro}'");
                 throw new ObjetoNaoEncontradoException(codigo, erro);
+            }
 
-            Registrar(tentativa, $"OCR leu '{lido.Texto}', portal respondeu '{erro}'");
             await portal.AguardarNovoCaptchaAsync();
         }
 
