@@ -3,7 +3,7 @@ using RastreamentoCorreios.Captcha;
 internal static class Avaliador
 {
     // Arquivos rotulados seguem o padrão "texto__NN.png"; os não rotulados são ignorados.
-    public static void Executar(string pastaAmostras, string pastaDebug)
+    public static void Executar(string pastaAmostras, string pastaDebug, Func<byte[], string?, CaptchaLido> resolver)
     {
         var rotuladas = Directory.GetFiles(pastaAmostras, "*__*.png").Order().ToArray();
         if (rotuladas.Length == 0)
@@ -12,7 +12,6 @@ internal static class Avaliador
             return;
         }
 
-        using var solver = new TesseractCaptchaSolver(Path.Combine(AppContext.BaseDirectory, "tessdata"));
         var acertos = 0;
 
         foreach (var arquivo in rotuladas)
@@ -20,7 +19,7 @@ internal static class Avaliador
             var nome = Path.GetFileNameWithoutExtension(arquivo);
             var esperado = nome.Split("__")[0].ToLowerInvariant();
 
-            var lido = solver.ResolverCaptcha(File.ReadAllBytes(arquivo), Path.Combine(pastaDebug, nome));
+            var lido = resolver(File.ReadAllBytes(arquivo), Path.Combine(pastaDebug, nome));
             var acertou = lido.Valido && lido.Texto == esperado;
             if (acertou) acertos++;
 

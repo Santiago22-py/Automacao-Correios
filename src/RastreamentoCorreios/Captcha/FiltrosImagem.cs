@@ -8,7 +8,9 @@ namespace RastreamentoCorreios.Captcha;
 /// </summary>
 internal static class FiltrosImagem
 {
-    /// <summary>Decodifica o PNG, converte para cinza (0 = preto, 255 = branco) e copia os pixels para uma matriz.</summary>
+    /// <summary>
+    /// Decodifica o PNG, converte para cinza (0 = preto, 255 = branco) e copia os pixels para uma matriz.
+    /// </summary>
     public static unsafe byte[,] CarregarEmCinza(byte[] png)
     {
         using var original = Pix.LoadFromMemory(png);
@@ -154,7 +156,9 @@ internal static class FiltrosImagem
         return resultado;
     }
 
-    /// <summary>Recorta a menor caixa que contém toda a tinta e adiciona uma margem branca.</summary>
+    /// <summary>
+    /// Recorta a menor caixa que contém toda a tinta e adiciona uma margem branca.
+    /// </summary>
     public static bool[,] RecortarComMargem(bool[,] tinta, int margem)
     {
         int altura = tinta.GetLength(0), largura = tinta.GetLength(1);
@@ -178,7 +182,9 @@ internal static class FiltrosImagem
         return resultado;
     }
 
-    /// <summary>Converte a máscara numa imagem de 8 bits do Leptonica: tinta preta sobre fundo branco.</summary>
+    /// <summary>
+    /// Converte a máscara numa imagem de 8 bits do Leptonica: tinta preta sobre fundo branco.
+    /// </summary>
     public static unsafe Pix ParaPix(bool[,] tinta)
     {
         var pix = Pix.Create(tinta.GetLength(1), tinta.GetLength(0), 8);
@@ -192,6 +198,38 @@ internal static class FiltrosImagem
         }
 
         return pix;
+    }
+
+    /// <summary>
+    /// Limpeza comum aos solvers: binariza e remove pontos, linhas finas e fragmentos soltos.
+    /// </summary>
+    public static bool[,] Limpar(byte[] png, string? pastaDebug)
+    {
+        var cinza = CarregarEmCinza(png);
+
+        var tinta = Binarizar(cinza, LimiarOtsu(cinza));
+        SalvarDebug(tinta, pastaDebug, "1-binarizada");
+
+        tinta = RemoverComponentesPequenos(tinta, tamanhoMinimo: 150);
+        SalvarDebug(tinta, pastaDebug, "2-sem-pontos");
+
+        tinta = Abrir(tinta, raio: 2);
+        SalvarDebug(tinta, pastaDebug, "3-sem-linhas-finas");
+
+        tinta = RemoverComponentesPequenos(tinta, tamanhoMinimo: 150);
+        SalvarDebug(tinta, pastaDebug, "4-sem-fragmentos");
+
+        return tinta;
+    }
+
+    // Salva a imagem de debug
+    public static void SalvarDebug(bool[,] tinta, string? pastaDebug, string etapa)
+    {
+        if (pastaDebug is null) return;
+
+        Directory.CreateDirectory(pastaDebug);
+        using var pix = ParaPix(tinta);
+        pix.Save(Path.Combine(pastaDebug, $"{etapa}.png"), ImageFormat.Png);
     }
 }
 

@@ -13,7 +13,18 @@ switch (args.FirstOrDefault())
         await Coletor.ExecutarAsync(pasta, quantidade: 20);
         break;
     case "avaliar":
-        Avaliador.Executar(pasta, Path.Combine("amostras", "debug"));
+        var pastaSaida = AppContext.BaseDirectory;
+        if (args.ElementAtOrDefault(1) == "tesseract")
+        {
+            using var tesseract = new TesseractCaptchaSolver(Path.Combine(pastaSaida, "tessdata"));
+            Avaliador.Executar(pasta, Path.Combine("amostras", "debug"), tesseract.ResolverCaptcha);
+        }
+        else
+        {
+            using var onnx = new OnnxCaptchaSolver(
+                Path.Combine(pastaSaida, "onnx", "common_old.onnx"), Path.Combine(pastaSaida, "onnx", "charset_old.json"));
+            Avaliador.Executar(pasta, Path.Combine("amostras", "debug"), onnx.ResolverCaptcha);
+        }
         break;
     case "consultar" when args.Length > 1:
         await ConsultarManualAsync(args[1]);

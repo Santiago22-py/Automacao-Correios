@@ -9,7 +9,7 @@ namespace RastreamentoCorreios;
 
 public sealed record OpcoesRastreamento(
     int MaxTentativas = 14,
-    int IntervaloEntreTentativasMs = 10000,
+    int IntervaloEntreTentativasMs = 5000,
     float TimeoutMs = 30000,
     bool Headless = true);
 

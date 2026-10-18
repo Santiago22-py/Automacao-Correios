@@ -9,12 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.31.0" />
     <PackageReference Include="Microsoft.Playwright" Version="1.63.0" />
     <PackageReference Include="Tesseract" Version="5.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="tessdata\**" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="onnx\**" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 
