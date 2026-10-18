@@ -13,7 +13,9 @@ if (args.Length == 0)
     return 1;
 }
 
-using var solver = new TesseractCaptchaSolver(Path.Combine(AppContext.BaseDirectory, "tessdata"));
+var pastaOnnx = Path.Combine(AppContext.BaseDirectory, "onnx");
+using var solver = new OnnxCaptchaSolver(
+    Path.Combine(pastaOnnx, "common_old.onnx"), Path.Combine(pastaOnnx, "charset_old.json"));
 var rastreador = new Rastreador(solver, new OpcoesRastreamento(), Console.Error);
 
 try
