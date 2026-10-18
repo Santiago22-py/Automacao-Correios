@@ -68,7 +68,7 @@ public class RastreamentoMapperTests
     {
         var descricao = RastreamentoMapper.Mapear(RespostaSucesso).Eventos[0].Descricao;
 
-        Assert.DoesNotContain('\u00a0', descricao);
+        Assert.DoesNotContain('\u00a0', descricao?? string.Empty);
     }
 
     [Theory]
