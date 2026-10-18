@@ -38,7 +38,7 @@ namespace RastreamentoCorreios.Navegacao
         {
             _playwright = await Playwright.CreateAsync();
             _browser = await _playwright.Chromium.LaunchAsync(new() { Headless = _headless });
-            _page = await _browser.NewPageAsync();
+            _page = await _browser.NewPageAsync(new() { DeviceScaleFactor = 1 });
             _page.SetDefaultTimeout(_timeoutMs);
 
             await _page.GotoAsync(UrlCorreios, new() { WaitUntil = WaitUntilState.DOMContentLoaded });
@@ -76,6 +76,18 @@ namespace RastreamentoCorreios.Navegacao
         }
 
         /// <summary>
+        /// Pede um novo CAPTCHA pelo botão da página e aguarda a nova imagem carregar.
+        /// </summary>
+        public async Task RecarregarCaptchaAsync()
+        {
+            await Pagina.RunAndWaitForResponseAsync(
+                () => Pagina.Locator("#captcha_refresh_btn").ClickAsync(),
+                resposta => resposta.Url.Contains("securimage_show.php"));
+
+            await AguardarCaptchaCarregadoAsync();
+        }
+
+        /// <summary>
         /// Fecha o navegador e libera os recursos utilizados pelo Playwright.
         /// </summary>
         private IPage Pagina =>
@@ -98,12 +110,6 @@ namespace RastreamentoCorreios.Navegacao
             {
                 _playwright.Dispose();
                 _playwright = null;
-            }
-
-            if (_page != null)
-            {
-                await _page.CloseAsync();
-                _page = null;
             }
         }
     }    
