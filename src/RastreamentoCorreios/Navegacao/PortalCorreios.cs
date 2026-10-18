@@ -4,7 +4,6 @@ namespace RastreamentoCorreios.Navegacao
 {   
     ///<summary>
     /// Classe responsável por navegar no portal dos correios e obter informações de rastreio.
-    /// Selada para impedir herança e garantir encapsulamento.
     /// </summary>
     public sealed class PortalCorreios : IAsyncDisposable
     {
@@ -88,9 +87,7 @@ namespace RastreamentoCorreios.Navegacao
             await AguardarCaptchaCarregadoAsync();
         }
 
-        /// <summary>
-        /// Fecha o navegador e libera os recursos utilizados pelo Playwright.
-        /// </summary>
+
         private IPage Pagina =>
         _page ?? throw new InvalidOperationException("Chame AbrirAsync antes de usar o portal.");
 

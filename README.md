@@ -306,6 +306,12 @@ O projeto possui 34 testes automatizados que cobrem a validação dos códigos d
 
 ---
 
+
+## Desenvolvimento
+
+
+O projeto foi desenvolvido com o Claude Code como par de programação e revisor. Fiz a investigação do portal (DevTools, rede, index.js), as decisões de arquitetura e de dependências, a coleta e rotulagem das amostras de CAPTCHA, as medições e a revisão de cada etapa. O trabalho foi feito em etapas pequenas, como mostram os commits e PRs.
+
 ## Créditos
 
 Modelo de reconhecimento de CAPTCHA: [ddddocr](https://github.com/sml2h3/ddddocr), licença MIT
