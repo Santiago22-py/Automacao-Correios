@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{8A1CC81D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaptchaLab", "tools\CaptchaLab\CaptchaLab.csproj", "{0874B701-0280-429C-A356-9B78C1AC6881}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{FF8BAD8A-A17F-439C-A207-653BE83DEF15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RastreamentoCorreios.Tests", "tests\RastreamentoCorreios.Tests\RastreamentoCorreios.Tests.csproj", "{95F6238F-32FF-46F5-872F-56C284945314}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,9 +32,14 @@ Global
 		{0874B701-0280-429C-A356-9B78C1AC6881}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0874B701-0280-429C-A356-9B78C1AC6881}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0874B701-0280-429C-A356-9B78C1AC6881}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95F6238F-32FF-46F5-872F-56C284945314}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95F6238F-32FF-46F5-872F-56C284945314}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95F6238F-32FF-46F5-872F-56C284945314}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95F6238F-32FF-46F5-872F-56C284945314}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{67F80339-4DD7-40C4-9569-E92091662029} = {6F2C121A-F32E-4B42-9951-BFEAB6237AEB}
 		{0874B701-0280-429C-A356-9B78C1AC6881} = {8A1CC81D-FB6F-4E08-9685-DC37134A40C0}
+		{95F6238F-32FF-46F5-872F-56C284945314} = {FF8BAD8A-A17F-439C-A207-653BE83DEF15}
 	EndGlobalSection
 EndGlobal
