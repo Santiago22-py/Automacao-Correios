@@ -1,6 +1,8 @@
 using RastreamentoCorreios.Captcha;
 
-/// <summary>Solver manual, só para desenvolvimento: salva a imagem e pede que uma pessoa digite o texto.</summary>
+/// <summary>
+/// Solver manual, só para desenvolvimento: salva a imagem e pede que uma pessoa digite o texto.
+/// </summary>
 internal sealed class ConsoleCaptchaSolver : ICaptchaSolver
 {
     public CaptchaLido ResolverCaptcha(byte[] imagemCaptcha)
