@@ -13,6 +13,7 @@ namespace RastreamentoCorreios.Navegacao
         //Variáveis privadas
         private readonly bool _headless;
         private readonly float _timeoutMs;
+        private string? _srcAntesDaConsulta;
 
         //Variaveis privadas para o Playwright
         private IPlaywright? _playwright;
@@ -117,7 +118,8 @@ namespace RastreamentoCorreios.Navegacao
         /// Preenche o CAPTCHA, clica em Consultar e devolve o corpo (JSON) da resposta de resultado.php.
         /// </summary>
         public async Task<string> ConsultarAsync(string textoCaptcha)
-        {
+        {   
+            _srcAntesDaConsulta = await Pagina.Locator("#captcha_image").GetAttributeAsync("src");
             await Pagina.Locator("#captcha").FillAsync(textoCaptcha);
 
             var resposta = await Pagina.RunAndWaitForResponseAsync(
@@ -125,7 +127,20 @@ namespace RastreamentoCorreios.Navegacao
                 r => r.Url.Contains("resultado.php"));
 
             return await resposta.TextAsync();
-}
+        }
+
+        /// <summary>
+    /// Depois de cada consulta, o script da página (refreshCaptcha) troca o src da imagem.
+    /// Espera o src mudar e a nova imagem terminar de carregar.
+    /// </summary>
+    public Task AguardarNovoCaptchaAsync()
+        {
+            return Pagina.WaitForFunctionAsync(
+                "anterior => { const img = document.querySelector('#captcha_image');" +
+                " return img.getAttribute('src') !== anterior && img.complete && img.naturalWidth > 0; }",
+                _srcAntesDaConsulta);
+        }
+        
 
     }    
 }

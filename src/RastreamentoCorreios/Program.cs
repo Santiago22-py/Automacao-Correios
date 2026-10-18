@@ -1,25 +1,29 @@
-﻿using RastreamentoCorreios.Navegacao;
+﻿using System.Text;
+using RastreamentoCorreios;
+using RastreamentoCorreios.Captcha;
+using RastreamentoCorreios.Erros;
+using RastreamentoCorreios.Saida;
 
-// Verifica se o código de rastreio foi fornecido como argumento
-if (args.Length < 1)
+Console.OutputEncoding = Encoding.UTF8;
+
+// Se o programa for chamado com argumentos, assume que é para rastrear um código de rastreio; caso contrário, assume que é para rodar o laboratório de CAPTCHA.
+if (args.Length == 0)
 {
-    Console.WriteLine("Uso: RastreamentoCorreios <codigo-de-rastreamento>");
+    Console.Error.WriteLine("Uso: RastreamentoCorreios <codigo-de-rastreamento>");
     return 1;
 }
 
-var codigoRastreio = args[0].Trim();
+using var solver = new TesseractCaptchaSolver(Path.Combine(AppContext.BaseDirectory, "tessdata"));
+var rastreador = new Rastreador(solver, new OpcoesRastreamento(), Console.Error);
 
-// Cria uma instância da classe PortalCorreios e realiza a navegação e preenchimento do código de rastreio
-await using var portalCorreios = new PortalCorreios(headless: false, timeoutMs: 30000);
-await portalCorreios.AbrirPaginaAsync();
-await portalCorreios.PreencherCodigoRastreioAsync(codigoRastreio);
-
-var imagem = await portalCorreios.CapturarCaptchaAsync(); 
-
-// Salva a imagem do captcha em um arquivo local
-Directory.CreateDirectory("captchas");
-var caminhoArquivo = Path.Combine("captchas", $"{codigoRastreio}-{DateTime.Now:yyyyMMdd_HHmmss}.png");
-await File.WriteAllBytesAsync(caminhoArquivo, imagem);
-
-Console.WriteLine($"Salvando imagem do captcha em: {caminhoArquivo}");
-return 0;
+try
+{
+    var rastreamento = await rastreador.RastrearAsync(args[0]);
+    Console.WriteLine(JsonSaida.Serializar(rastreamento));
+    return 0;
+}
+catch (RastreamentoException ex)
+{
+    Console.Error.WriteLine($"Erro: {ex.Message}");
+    return 2;
+}
