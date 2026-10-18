@@ -6,7 +6,7 @@ namespace RastreamentoCorreios.Captcha
     /// </summary>
     /// <param name="Texto"> O texto lido do captcha. </param>
     /// <param name="Sucesso"> Indicador de sucesso na leitura do captcha. </param>
-    public sealed record CaptchaLido(string Texto, bool Sucesso);
+    public sealed record CaptchaLido(string Texto, bool Valido);
 
     public interface ICaptchaSolver
     {

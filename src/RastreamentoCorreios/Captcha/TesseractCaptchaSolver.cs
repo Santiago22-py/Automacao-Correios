@@ -17,7 +17,7 @@ namespace RastreamentoCorreios.Captcha
         /// <param name="caracteresPermitidos">Caracteres permitidos no CAPTCHA.</param>
         /// <param name="tamanhoMaximo">Tamanho máximo do CAPTCHA.</param>
         /// <param name="tamanhoMinimo">Tamanho mínimo do CAPTCHA.</param>
-        public TesseractCaptchaSolver(string pathTessdata, string caracteresPermitidos = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", int tamanhoMaximo = 6, int tamanhoMinimo = 4)
+        public TesseractCaptchaSolver(string pathTessdata, string caracteresPermitidos = "abcdefghijklmnopqrstuvwxyz0123456789", int tamanhoMaximo = 6, int tamanhoMinimo = 4)
         {
             _caracteresPermtidos = caracteresPermitidos;
             _tamanhMaximo = tamanhoMaximo;
@@ -51,7 +51,7 @@ namespace RastreamentoCorreios.Captcha
         }
 
         /// <summary>
-        /// Verifica se o texto do CAPTCHA é válido com base nos critérios de tamanho mínimo e máximo.
+        /// Pré-processa a imagem do CAPTCHA para melhorar a precisão do OCR.
         /// </summary>
         /// <param name="original">A imagem original do CAPTCHA.</param>
         /// <param name="pastaDebug">O caminho da pasta para salvar as imagens de depuração.</param>
@@ -63,21 +63,17 @@ namespace RastreamentoCorreios.Captcha
             using var imagemCinza = original.ConvertRGBToGray();
             Salvar(imagemCinza, pastaDebug, "1-cinza");
 
-            // Aplica a binarização Otsu adaptativa para melhorar a legibilidade do texto no CAPTCHA
-            using var imagemBinarizada = imagemCinza.BinarizeOtsuAdapativeThreshold(imagemCinza.width, imagemCinza.height, 0, 0, 0f);
+            // Remove pequenos ruídos da imagem binarizada para melhorar a precisão do OCR
+            var imagemBinarizada = imagemCinza.BinarizeOtsuAdaptiveThreshold(imagemCinza.Width, imagemCinza.Height, 0, 0, 0f);
             Salvar(imagemBinarizada, pastaDebug, "2-binarizada");
 
-            // Remove pequenos ruídos da imagem binarizada para melhorar a precisão do OCR
-            var imagemSemRuido = imagemBinarizada.Despeckle(Pix.SEL_STR2, 2);
-            Salvar(imagemSemRuido, pastaDebug, "3-sem-ruido");
-
-            return imagemSemRuido;
+            return imagemBinarizada;
         }
 
         // Retorna se o texto do CAPTCHA é válido com base nos critérios de tamanho mínimo e máximo e nos caracteres permitidos
         private bool isValido(string texto)
         {
-            return texto.Length >= _tamanhoMinimo && texto.Length <= _tamanhMaximo && texto.All(c => _caracteresPermtidos.Contains);
+            return texto.Length >= _tamanhoMinimo && texto.Length <= _tamanhMaximo && texto.All(_caracteresPermtidos.Contains);
         }
         
         // Salva a imagem em um arquivo PNG na pasta de depuração, se fornecida
@@ -97,3 +93,4 @@ namespace RastreamentoCorreios.Captcha
 
     }
 }
+
