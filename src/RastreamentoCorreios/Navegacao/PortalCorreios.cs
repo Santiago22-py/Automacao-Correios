@@ -112,5 +112,20 @@ namespace RastreamentoCorreios.Navegacao
                 _playwright = null;
             }
         }
+
+        /// <summary>
+        /// Preenche o CAPTCHA, clica em Consultar e devolve o corpo (JSON) da resposta de resultado.php.
+        /// </summary>
+        public async Task<string> ConsultarAsync(string textoCaptcha)
+        {
+            await Pagina.Locator("#captcha").FillAsync(textoCaptcha);
+
+            var resposta = await Pagina.RunAndWaitForResponseAsync(
+                () => Pagina.Locator("#b-pesquisar").ClickAsync(),
+                r => r.Url.Contains("resultado.php"));
+
+            return await resposta.TextAsync();
+}
+
     }    
 }
