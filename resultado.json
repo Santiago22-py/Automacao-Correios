@@ -1,0 +1,202 @@
+{
+  "codigoObjeto": "NN437873753BR",
+  "tipoPostal": "ETQ LOG PACKET STANDARD",
+  "previsaoEntrega": "2026-09-03",
+  "eventos": [
+    {
+      "codigo": "BDE",
+      "tipo": "01",
+      "status": "Objeto entregue ao destinatário",
+      "descricao": "Queremos te ouvir! Responda a uma pesquisa rápida e nos ajude a melhorar a sua experiência: https://survey3.medallia.com/?correios-nps-sms-sro&obj=NN437873753BR",
+      "dataHora": "2026-08-31T16:04:26-03:00",
+      "local": {
+        "tipo": "Unidade de Distribuição",
+        "nome": null,
+        "cidade": "Sao Jose do Rio Preto",
+        "uf": null
+      },
+      "origem": null,
+      "destino": null
+    },
+    {
+      "codigo": "OEC",
+      "tipo": "01",
+      "status": "Objeto saiu para entrega ao destinatário",
+      "descricao": "É preciso ter alguém no endereço para receber o carteiro",
+      "dataHora": "2026-08-31T09:22:35-03:00",
+      "local": {
+        "tipo": "Unidade de Distribuição",
+        "nome": null,
+        "cidade": "Sao Jose do Rio Preto",
+        "uf": null
+      },
+      "origem": null,
+      "destino": null
+    },
+    {
+      "codigo": "RO",
+      "tipo": "01",
+      "status": "Objeto em transferência - por favor aguarde",
+      "descricao": null,
+      "dataHora": "2026-08-28T08:52:24-03:00",
+      "local": null,
+      "origem": {
+        "tipo": "Unidade de Tratamento",
+        "nome": null,
+        "cidade": "Sao Jose do Rio Preto",
+        "uf": null
+      },
+      "destino": {
+        "tipo": "Unidade de Distribuição",
+        "nome": null,
+        "cidade": "Sao Jose do Rio Preto",
+        "uf": null
+      }
+    },
+    {
+      "codigo": "RO",
+      "tipo": "01",
+      "status": "Objeto em transferência - por favor aguarde",
+      "descricao": null,
+      "dataHora": "2026-08-26T20:58:20-03:00",
+      "local": null,
+      "origem": {
+        "tipo": "Unidade de Logística Integrada",
+        "nome": null,
+        "cidade": "Valinhos",
+        "uf": null
+      },
+      "destino": {
+        "tipo": "Unidade de Tratamento",
+        "nome": null,
+        "cidade": "Sao Jose do Rio Preto",
+        "uf": null
+      }
+    },
+    {
+      "codigo": "RO",
+      "tipo": "01",
+      "status": "Objeto em transferência - por favor aguarde",
+      "descricao": null,
+      "dataHora": "2026-08-26T09:11:00-03:00",
+      "local": null,
+      "origem": {
+        "tipo": "Unidade de Logística Integrada",
+        "nome": null,
+        "cidade": "Valinhos",
+        "uf": null
+      },
+      "destino": {
+        "tipo": "Unidade de Tratamento",
+        "nome": null,
+        "cidade": "Sao Jose do Rio Preto",
+        "uf": null
+      }
+    },
+    {
+      "codigo": "PAR",
+      "tipo": "10",
+      "status": "Saída do Centro Internacional",
+      "descricao": "Objeto sem pendências de pagamentos e outras obrigações",
+      "dataHora": "2026-08-26T09:10:59-03:00",
+      "local": {
+        "tipo": "Unidade de Logística Integrada",
+        "nome": null,
+        "cidade": "Valinhos",
+        "uf": null
+      },
+      "origem": null,
+      "destino": null
+    },
+    {
+      "codigo": "PAR",
+      "tipo": "31",
+      "status": "Pagamento confirmado",
+      "descricao": "Aguardando envio para o cliente",
+      "dataHora": "2026-08-26T08:40:13-03:00",
+      "local": {
+        "tipo": "Unidade de Logística Integrada",
+        "nome": null,
+        "cidade": "Valinhos",
+        "uf": null
+      },
+      "origem": null,
+      "destino": null
+    },
+    {
+      "codigo": "PAR",
+      "tipo": "17",
+      "status": "Importação autorizada pela autoridade competente - aguardando pagamento",
+      "descricao": "Acesse o Minhas Importações para realizar o pagamento ou contestar a tributação https://portalimportador.correios.com.br",
+      "dataHora": "2026-08-23T11:05:09-03:00",
+      "local": {
+        "tipo": "Unidade de Logística Integrada",
+        "nome": null,
+        "cidade": "Valinhos",
+        "uf": null
+      },
+      "origem": null,
+      "destino": null
+    },
+    {
+      "codigo": "PAR",
+      "tipo": "16",
+      "status": "Objeto recebido pelos Correios do Brasil",
+      "descricao": null,
+      "dataHora": "2026-08-21T10:09:54-03:00",
+      "local": {
+        "tipo": "Unidade de Logística Integrada",
+        "nome": null,
+        "cidade": "Valinhos",
+        "uf": null
+      },
+      "origem": null,
+      "destino": null
+    },
+    {
+      "codigo": "PAR",
+      "tipo": "07",
+      "status": "Análise concluída - importação autorizada",
+      "descricao": "A autorização poderá ser revista pela autoridade aduaneira ou pelos órgãos anuentes. Acompanhe pelo Minhas Importações: https://portalimportador.correios.com.br",
+      "dataHora": "2026-08-17T11:26:00-03:00",
+      "local": {
+        "tipo": "Unidade de Logística Integrada",
+        "nome": null,
+        "cidade": "Valinhos",
+        "uf": null
+      },
+      "origem": null,
+      "destino": null
+    },
+    {
+      "codigo": "PO",
+      "tipo": "01",
+      "status": "Objeto postado",
+      "descricao": null,
+      "dataHora": "2026-08-16T23:13:20-03:00",
+      "local": {
+        "tipo": "País",
+        "nome": "CHINA",
+        "cidade": null,
+        "uf": null
+      },
+      "origem": null,
+      "destino": null
+    },
+    {
+      "codigo": "PAR",
+      "tipo": "21",
+      "status": "Informações enviadas para análise da autoridade aduaneira/órgãos anuentes",
+      "descricao": "Acompanhe pelo Minhas Importações https://portalimportador.correios.com.br",
+      "dataHora": "2026-08-16T10:07:45-03:00",
+      "local": {
+        "tipo": "Unidade de Logística Integrada",
+        "nome": null,
+        "cidade": "Valinhos",
+        "uf": null
+      },
+      "origem": null,
+      "destino": null
+    }
+  ]
+}
