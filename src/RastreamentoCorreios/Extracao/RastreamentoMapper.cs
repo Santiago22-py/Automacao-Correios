@@ -69,11 +69,16 @@ public static class RastreamentoMapper
             ? null
             : new Unidade(Texto(unidade.Tipo), Texto(unidade.Nome), Texto(unidade.Endereco?.Cidade), Texto(unidade.Endereco?.Uf));
 
-    /// <summary>O portal usa "" para ausência e às vezes espaço não separável; na saída, vazio vira null.</summary>
+    /// <summary>
+    /// O portal usa "" para ausência e às vezes espaço não separável; na saída, vazio vira null.
+    /// </summary>
     private static string? Texto(string? valor) =>
         string.IsNullOrWhiteSpace(valor) ? null : Regex.Replace(valor, @"\s+", " ").Trim();
 
-    /// <summary>"2026-08-31 16:04:26.000000" + "America/Sao_Paulo" → 2026-08-31T16:04:26-03:00.</summary>
+    /// <summary>
+    /// Converte uma data e hora do portal para um DateTimeOffset.
+    /// exemplo: "2026-08-31 16:04:26.000000" + "America/Sao_Paulo" -> 2026-08-31T16:04:26-03:00
+    /// </summary>
     private static DateTimeOffset? LerDataHora(DataHoraPortal? dataHora)
     {
         if (dataHora?.Date is null) return null;
