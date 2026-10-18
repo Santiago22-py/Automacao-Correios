@@ -128,7 +128,7 @@ Clique [aqui](resultado.json) para ver um arquivo completo
 | Modelo `common_old.onnx` do [ddddocr](https://github.com/sml2h3/ddddocr) (MIT) | rede neural treinada em CAPTCHAs | Utilizado no lugar do Tesseract por ser especializado em reconhecimento de CAPTCHA, mostrou um desempenho bem superior |
 | Tesseract 5.2.0 (Leptonica) | leitura de PNG/pixels; OCR alternativo | wrapper .NET mais usado do Tesseract; o Leptonica embutido permitiu ler e escrever pixels sem outra biblioteca de imagem |
 | System.Text.Json | leitura da resposta do portal e geração da saída | Biblioteca nativa do .NET para serialização e desserialização JSON, cortando a necessidade de dependências extras |
-| xUnit + GitHub Actions | testes automatizados e CI | Usados para os testes automatizados, o xUnit permite validar as regras e transformações da apliação de forma unitária, enquanto o GitHub actions executa os testes automaticamente a cada PR e Merge |
+| xUnit + GitHub Actions | testes automatizados e CI | Usados para os testes automatizados, o xUnit permite validar as regras e transformações da aplicação de forma unitária, enquanto o GitHub actions executa os testes automaticamente a cada PR e Merge |
 
 ### Tecnologias Descartadas
 SixLabors.ImageSharp: A versão mais recente exige licença, e as 2.x e 3.x possuem vulnerabilidades conhecidas  
@@ -160,9 +160,9 @@ tests/RastreamentoCorreios.Tests/
 amostras/                      CAPTCHAs rotulados, respostas reais do portal, log de medições
 ```
 
-Interface única (ICaptchaSolver) serve como ponto central de subsituição, inclusive se mostrou útil quando o solver foi trocado de Tesseract para ONNX, mudando apenas uma linha no Program.cs.  
+Interface única (ICaptchaSolver) serve como ponto central de substituição, inclusive se mostrou útil quando o solver foi trocado de Tesseract para ONNX, mudando apenas uma linha no Program.cs.  
 Dois conjuntos de modelos, portal e saída, assim se o portal mudar, será necessário adaptar somente o mapeador, sem detalhes espalhados por todo o código.  
-Evitei usar injeção de dependências e camadas genéricas pois isso acabaria aumentado a complexidade de desenvolvimento e manutenção do projeto sem ganho que justificasse.
+Evitei usar injeção de dependências e camadas genéricas pois isso acabaria aumentando a complexidade de desenvolvimento e manutenção do projeto sem ganho que justificasse.
 
 ---
 
@@ -192,7 +192,7 @@ Aqui a identificação foi relativamente simples, eu abri a DevTools pelo Google
 
 Para decidir a melhor estratégia de resolução do CAPTCHA, eu primeiro investiguei um pouco.  
 Gerei pouco mais de 30 imagens (via script e manualmente) do CAPTCHA para procurar padrões entre elas, com isso eu percebi que as imagens sempre tinham entre 
-4 a 6 caracteres, todos minúsculos (apesar da validação ser case-insensitive), podendo ou não ter números, também percebi que certas letras não apareceram nas amostras como i, j, o, q, x e números como 0 e 1, provavelmente pra evitar confusão em quem está difitando.  
+4 a 6 caracteres, todos minúsculos (apesar da validação ser case-insensitive), podendo ou não ter números, também percebi que certas letras não apareceram nas amostras como i, j, o, q, x e números como 0 e 1, provavelmente pra evitar confusão em quem está digitando.  
 No mais, os ruídos sempre eram os mesmos, diversos pontinhos em formato de + espalhados pela imagem, além de linhas finas e grossas cortando os caracteres.
 
 ### Pré-processamento
