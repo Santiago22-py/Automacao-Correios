@@ -17,7 +17,7 @@ namespace RastreamentoCorreios.Captcha
         /// <param name="caracteresPermitidos">Caracteres permitidos no CAPTCHA.</param>
         /// <param name="tamanhoMaximo">Tamanho máximo do CAPTCHA.</param>
         /// <param name="tamanhoMinimo">Tamanho mínimo do CAPTCHA.</param>
-        public TesseractCaptchaSolver(string pathTessdata, string caracteresPermitidos = "abcdefghijklmnopqrstuvwxyz0123456789", int tamanhoMaximo = 6, int tamanhoMinimo = 4)
+        public TesseractCaptchaSolver(string pathTessdata, string caracteresPermitidos = "abcdefghklmnprstuvwyz23456789", int tamanhoMaximo = 6, int tamanhoMinimo = 4)
         {
             _caracteresPermtidos = caracteresPermitidos;
             _tamanhMaximo = tamanhoMaximo;
@@ -42,8 +42,8 @@ namespace RastreamentoCorreios.Captcha
         {   
             // Carrega a imagem do CAPTCHA na memória e processa com o Tesseract
             using var original = Pix.LoadFromMemory(imagemCaptcha);
-            using var imagemProcessada = PreProcessar(original, pastaDebug);
-            using var pagina = _engine.Process(imagemProcessada, PageSegMode.SingleWord);
+            using var imagemProcessada = PreProcessar(imagemCaptcha, pastaDebug);
+            using var pagina = _engine.Process(imagemProcessada, PageSegMode.SingleLine);
 
             var texto = new string(pagina.GetText().Where(c => !char.IsWhiteSpace(c)).ToArray()).ToLowerInvariant();
 
@@ -53,21 +53,28 @@ namespace RastreamentoCorreios.Captcha
         /// <summary>
         /// Pré-processa a imagem do CAPTCHA para melhorar a precisão do OCR.
         /// </summary>
-        /// <param name="original">A imagem original do CAPTCHA.</param>
+        /// <param name="imagemPng">A imagem original do CAPTCHA.</param>
         /// <param name="pastaDebug">O caminho da pasta para salvar as imagens de depuração.</param>
-        private static Pix PreProcessar(Pix original, string? pastaDebug)
+        private static Pix PreProcessar(byte[] imagemPng, string? pastaDebug)
         {
-            Salvar(original, pastaDebug, "0-original");
+            var cinza = FiltrosImagem.CarregarEmCinza(imagemPng);
 
-            // Converte a imagem para tons de cinza para melhorar a precisão do OCR
-            using var imagemCinza = original.ConvertRGBToGray();
-            Salvar(imagemCinza, pastaDebug, "1-cinza");
+            var tinta = FiltrosImagem.Binarizar(cinza, FiltrosImagem.LimiarOtsu(cinza));
+            Salvar(tinta, pastaDebug, "1-binarizada");
 
-            // Remove pequenos ruídos da imagem binarizada para melhorar a precisão do OCR
-            var imagemBinarizada = imagemCinza.BinarizeOtsuAdaptiveThreshold(imagemCinza.Width, imagemCinza.Height, 0, 0, 0f);
-            Salvar(imagemBinarizada, pastaDebug, "2-binarizada");
+            tinta = FiltrosImagem.RemoverComponentesPequenos(tinta, tamanhoMinimo: 150);
+            Salvar(tinta, pastaDebug, "2-sem-pontos");
 
-            return imagemBinarizada;
+            tinta = FiltrosImagem.Abrir(tinta, raio: 2);
+            Salvar(tinta, pastaDebug, "3-sem-linhas-finas");
+
+            tinta = FiltrosImagem.RemoverComponentesPequenos(tinta, tamanhoMinimo: 150);
+            Salvar(tinta, pastaDebug, "4-sem-fragmentos");
+
+            tinta = FiltrosImagem.RecortarComMargem(tinta, margem: 15);
+            Salvar(tinta, pastaDebug, "5-recortada");
+
+            return FiltrosImagem.ParaPix(tinta);
         }
 
         // Retorna se o texto do CAPTCHA é válido com base nos critérios de tamanho mínimo e máximo e nos caracteres permitidos
@@ -77,20 +84,19 @@ namespace RastreamentoCorreios.Captcha
         }
         
         // Salva a imagem em um arquivo PNG na pasta de depuração, se fornecida
-        private static void Salvar(Pix imagem, string? pastaDebug, string etapa)
+        private static void Salvar(bool[,] tinta, string? pastaDebug, string etapa)
         {
             if (pastaDebug is null) return;
 
             Directory.CreateDirectory(pastaDebug);
-            imagem.Save(Path.Combine(pastaDebug, $"{etapa}.png"), ImageFormat.Png);
+            using var pix = FiltrosImagem.ParaPix(tinta);
+            pix.Save(Path.Combine(pastaDebug, $"{etapa}.png"), ImageFormat.Png);
         }
 
         public void Dispose()
         {
             _engine.Dispose();
         }
-
-
     }
 }
 
